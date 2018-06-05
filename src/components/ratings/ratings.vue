@@ -61,6 +61,7 @@
     import ratingselect from '../../components/ratingselect/ratingselect';
     import split from '../../components/split/split';
     import {formatDate} from '../../common/js/date';
+    import {getRatings} from '@api/api.js';
 
     // selectType 的初始常量
     const ALL = 2;
@@ -88,17 +89,18 @@
             };
         },
         created() {
-            this.$http.get('/api/ratings').then((response) => {
-                response = response.body;
-                if (response.errno === ERR_OK) {
-                    this.ratings = response.data;
-                    this.$nextTick(() => {
-                        this.scroll = new BScroll(this.$refs.ratings, {
-                            click: true
-                        });
-                    });
-                }
-            });
+            // this.$http.get('/api/ratings').then((response) => {
+            //     response = response.body;
+            //     if (response.errno === ERR_OK) {
+            //         this.ratings = response.data;
+            //         this.$nextTick(() => {
+            //             this.scroll = new BScroll(this.$refs.ratings, {
+            //                 click: true
+            //             });
+            //         });
+            //     }
+            // });
+            this._getRatings();
 
             // 监听 refresh.scroll 事件
             eventHub.$on('refresh.scroll', this.refreshScroll);
@@ -110,6 +112,19 @@
             }
         },
         methods: {
+            _getRatings() {
+                getRatings().then((response) => {
+                    response = response.body;
+                    if (response.errno === ERR_OK) {
+                        this.ratings = response.data;
+                        this.$nextTick(() => {
+                            this.scroll = new BScroll(this.$refs.ratings, {
+                                click: true
+                            });
+                        });
+                    }
+                });
+            },
             needShow(type, text) {
                 if (this.onlyContent && !text) {
                     return false;

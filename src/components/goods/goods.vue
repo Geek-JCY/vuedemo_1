@@ -50,6 +50,7 @@
     import cartcontrol from '../../components/cartcontrol/cartcontrol';
     import { eventHub } from '../../eventHub';
     import food from '../../components/food/food';
+    import {getGoods} from '@api/api.js';
 
     const ERR_OK = 0;
 
@@ -93,18 +94,19 @@
         },
         created() {
             this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
-            this.$http.get('/api/goods').then((response) => {
-                response = response.body;
-                // console.log('goods====>', response);
-                if (response.errno === ERR_OK) {
-                    this.goods = response.data;
-                    // DOM 还没有更新
-                    this.$nextTick(() => {
-                       this._initScroll();
-                       this._calculateHeight();
-                    });
-                }
-            });
+            // this.$http.get('/api/goods').then((response) => {
+            //     response = response.body;
+            //     // console.log('goods====>', response);
+            //     if (response.errno === ERR_OK) {
+            //         this.goods = response.data;
+            //         // DOM 还没有更新
+            //         this.$nextTick(() => {
+            //            this._initScroll();
+            //            this._calculateHeight();
+            //         });
+            //     }
+            // });
+            this._getGoods();
 
             // 监听 cart.add 事件
             eventHub.$on('cart.add', this._drop);
@@ -122,6 +124,20 @@
             eventHub.$off('mask.toggle', this._maskToggle);
         },
         methods: {
+            _getGoods() {
+                getGoods().then((response) => {
+                    response = response.body;
+                    // console.log('goods====>', response);
+                    if (response.errno === ERR_OK) {
+                        this.goods = response.data;
+                        // DOM 还没有更新
+                        this.$nextTick(() => {
+                           this._initScroll();
+                           this._calculateHeight();
+                        });
+                    }
+                });
+            },
             selectMenu(index, event) {
                 if (!event._constructed) {
                     return;

@@ -25,6 +25,7 @@
 <script type="text/ecmascript-6">
 import header from './components/header/header.vue';
 import {urlParse} from './common/js/util';
+import {getSeller} from '@api/api.js';
 
 const ERR_OK = 0;
 
@@ -41,15 +42,29 @@ export default {
     };
   },
   created() {
-    this.$http.get('/api/seller').then((response) => {
-      response = response.body;
-      if (response.errno === ERR_OK) {
-        // this.seller = response.data;
-        // Object.assign 方法 合并对象, 添加 id
-        this.seller = Object.assign({}, this.seller, response.data);
-        console.log('this.seller===>', this.seller);
-      }
-    });
+    // this.$http.get('/api/seller').then((response) => {
+    //   response = response.body;
+    //   if (response.errno === ERR_OK) {
+    //     // this.seller = response.data;
+    //     // Object.assign 方法 合并对象, 添加 id
+    //     this.seller = Object.assign({}, this.seller, response.data);
+    //     console.log('this.seller===>', this.seller);
+    //   }
+    // });
+    this._getSeller();
+  },
+  methods: {
+    _getSeller() {
+      getSeller().then((response) => {
+        response = response.body;
+        if (response.errno === ERR_OK) {
+          // this.seller = response.data;
+          // Object.assign 方法 合并对象, 添加 id
+          this.seller = Object.assign({}, this.seller, response.data);
+          console.log('this.seller===>', this.seller);
+        }
+      });
+    }
   },
   components: {
     'v-header': header
