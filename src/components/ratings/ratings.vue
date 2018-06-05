@@ -25,7 +25,7 @@
                 </div>
             </div>
             <split></split>
-            <ratingselect :select-type.sync="selectType" :only-content.sync="onlyContent" :desc="desc" :ratings="ratings" ></ratingselect>
+            <ratingselect :fromComponent="fromComponent" :select-type.sync="selectType" :only-content.sync="onlyContent" :desc="desc" :ratings="ratings" ></ratingselect>
             <div class="rating-wrapper">
                 <ul>
                     <li v-for="rating in ratings" class="rating-item b-botder-1px" v-show="needShow(rating.rateType, rating.text)">
@@ -68,6 +68,7 @@
     const ERR_OK = 0;
 
     export default {
+        name: 'ratings',
         props: {
             seller: {
                 type: Object
@@ -75,6 +76,7 @@
         },
         data() {
             return {
+                fromComponent: this.$options.name,
                 ratings: [],
                 selectType: ALL,
                 onlyContent: true,
@@ -118,8 +120,15 @@
                     return type === this.selectType;
                 }
             },
-            // 刷新 scroll
-            refreshScroll() {
+            /**
+             * [刷新 scroll]
+             * @param  {[String]} args [作为判断依据 刷新当前所处的组件]
+             */
+            refreshScroll(arg) {
+                if (arg !== this.$options.name) {
+                   return;
+                }
+
                 this.$nextTick(() => {
                     this.scroll.refresh();
                 });
@@ -264,11 +273,5 @@
                         line-height: 12px
                         font-size: 10px
                         color: rgb(147, 153, 159)
-                    
-                        
-            
-                        
-                        
-                    
-                
+                                    
 </style>

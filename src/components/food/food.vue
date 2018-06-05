@@ -31,7 +31,7 @@
                 <split></split>
                 <div class="rating">
                     <h1 class="title">商品评价</h1>
-                    <ratingselect :select-type.sync="selectType" :only-content.sync="onlyContent" :desc="desc" :ratings="food.ratings" ></ratingselect>
+                    <ratingselect :fromComponent="fromComponent" :select-type.sync="selectType" :only-content.sync="onlyContent" :desc="desc" :ratings="food.ratings" ></ratingselect>
                     <div class="rating-wrapper">
                         <ul v-show="food.ratings && food.ratings.length > 0">
                             <li v-show="needShow(rating.rateType, rating.text)" v-for="rating in food.ratings" class="rating-item b-border-1px">
@@ -68,6 +68,7 @@
     // const NEGATIVE = 1;
 
     export default {
+        name: 'food',
         props: {
             food: {
                 type: Object
@@ -76,6 +77,7 @@
         data() {
             return {
                 showFlag: false,
+                fromComponent: this.$options.name,
                 selectType: ALL,
                 onlyContent: true,
                 desc: {
@@ -128,7 +130,11 @@
                 }
             },
             // 刷新 scroll
-            refreshScroll() {
+            refreshScroll(arg) {
+                if (arg !== this.$options.name) {
+                   return;
+                }
+
                 this.$nextTick(() => {
                     this.scroll.refresh();
                 });

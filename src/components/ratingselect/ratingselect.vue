@@ -20,6 +20,10 @@
 
     export default {
         props: {
+            fromComponent: {
+                type: String,
+                default: 'ratings'
+            },
             ratings: {
                 type: Array,
                 default() {
@@ -64,7 +68,7 @@
         methods: {
             select(type, event) {
                 if (!event._constructed) {
-                    return;
+                    return false;
                 }
                 /*
                 this.selectType = type
@@ -75,8 +79,8 @@
                 // 点击时 触发 selectType update 事件
                 this.$emit('update:selectType', type);
 
-                // 分发 refresh.scroll 事件， 让评论列表的高度 刷新
-                eventHub.$emit('refresh.scroll');
+                // 分发 refresh.scroll 事件，让评论列表的高度 刷新
+                eventHub.$emit('refresh.scroll', this.fromComponent);
             },
             toggleContent(event) {
                 if (!event._constructed) {
