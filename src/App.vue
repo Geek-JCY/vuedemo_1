@@ -42,15 +42,7 @@ export default {
     };
   },
   created() {
-    // this.$http.get('/api/seller').then((response) => {
-    //   response = response.body;
-    //   if (response.errno === ERR_OK) {
-    //     // this.seller = response.data;
-    //     // Object.assign 方法 合并对象, 添加 id
-    //     this.seller = Object.assign({}, this.seller, response.data);
-    //     console.log('this.seller===>', this.seller);
-    //   }
-    // });
+    // 获取 seller 数据
     this._getSeller();
   },
   methods: {
@@ -61,7 +53,6 @@ export default {
           // this.seller = response.data;
           // Object.assign 方法 合并对象, 添加 id
           this.seller = Object.assign({}, this.seller, response.data);
-          console.log('this.seller===>', this.seller);
         }
       });
     }

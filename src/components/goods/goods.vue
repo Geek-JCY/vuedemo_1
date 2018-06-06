@@ -94,18 +94,8 @@
         },
         created() {
             this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
-            // this.$http.get('/api/goods').then((response) => {
-            //     response = response.body;
-            //     // console.log('goods====>', response);
-            //     if (response.errno === ERR_OK) {
-            //         this.goods = response.data;
-            //         // DOM 还没有更新
-            //         this.$nextTick(() => {
-            //            this._initScroll();
-            //            this._calculateHeight();
-            //         });
-            //     }
-            // });
+
+            // 获取 goods 数据
             this._getGoods();
 
             // 监听 cart.add 事件
